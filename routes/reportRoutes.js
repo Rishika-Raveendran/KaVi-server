@@ -92,7 +92,7 @@ router.route("/cccollection").post((req, res) => {
   var ccid = req.body.ccid;
   var date = new Date();
   var veg_category = req.body.category;
-  if (Collection.findAll({ cc_id: ccid, category: veg_category }).count() > 0) {
+  // if (Collection.findAll({ cc_id: ccid, category: veg_category }).count() > 0) {
     Collection.updateOne(
       { cc_id: ccid, category: veg_category },
       {
@@ -101,22 +101,22 @@ router.route("/cccollection").post((req, res) => {
         },
       }
     ).catch((err) => console.log(err));
-  } else {
-    Collection.insertOne({
-      block: "1",
-      krishibhavan: "Kakkur",
-      category: veg_category,
-      cc_id: ccid,
-      items: req.body.data,
-      date: `${date.getDate()}/${date.getMonth()}/${date.getFullYear}`,
-    });
-  }
+  // } else {
+  //   Collection.insertOne({
+  //     block: "1",
+  //     krishibhavan: "Kakkur",
+  //     category: veg_category,
+  //     cc_id: ccid,
+  //     items: req.body.data,
+  //     date: `${date.getDate()}/${date.getMonth()}/${date.getFullYear}`,
+  //   });
+  // }
 });
 
 //Update stock by posting new stock value after edit.
 router.route("/cstock").post((req, res) => {
-  if (Stock.findAll(
-    { type_id: req.body.ccid, category: req.body.category }).count>0) {
+  // if (Stock.findAll(
+  //   { type_id: req.body.ccid, category: req.body.category }).count>0) {
       Stock.updateOne(
         { type_id: req.body.ccid, category: req.body.category },
         {
@@ -125,9 +125,9 @@ router.route("/cstock").post((req, res) => {
           },
         }
       );
-  } else {
-    //Some code Lets see
-  }
+  // } else {
+  //   //Some code Lets see
+  // }
 });
 router.route("/clogs").post((req, res) => {
 
