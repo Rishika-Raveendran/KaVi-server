@@ -6,7 +6,7 @@ const cron = require("node-cron");
 var router = require("./routes/reportRoutes");
 
 const normalizePort = port => parseInt(port, 10);
-const PORT=process.env.PORT||3001
+const PORT=normalizePort(process.env.PORT)||3001
 
 //var auth = require("./middleware/auth")
 app.use(cors());

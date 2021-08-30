@@ -92,7 +92,7 @@ router.route("/cccollection").post((req, res) => {
   var ccid = req.body.ccid;
   var date = new Date();
   var veg_category = req.body.category;
-  if (Collection.findOne({ cc_id: ccid, category: veg_category }).count() > 0) {
+  if (Collection.findAll({ cc_id: ccid, category: veg_category }).count() > 0) {
     Collection.updateOne(
       { cc_id: ccid, category: veg_category },
       {
@@ -115,7 +115,7 @@ router.route("/cccollection").post((req, res) => {
 
 //Update stock by posting new stock value after edit.
 router.route("/cstock").post((req, res) => {
-  if (Stock.find(
+  if (Stock.findAll(
     { type_id: req.body.ccid, category: req.body.category }).count>0) {
       Stock.updateOne(
         { type_id: req.body.ccid, category: req.body.category },

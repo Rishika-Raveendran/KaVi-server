@@ -4,8 +4,7 @@ const correctionLogSchema = {
     cc_id: String,
     detail: [{
         date: Date,
-        logs:{
-     
+        logs:{     
         category: String,
         correction: Number,
         remarks: String
