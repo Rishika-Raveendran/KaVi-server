@@ -7,7 +7,7 @@ var User = require("../models/User");
 var Sales = require("../models/Sales");
 var Collection = require("../models/Collection");
 var Stock = require("../models/Stock");
-var CorrectionLog = require("../models/CorrectionLog");
+var Correctionlog = require("../models/CorrectionLog");
 
 //endpoint for login functionality and authentication
 router.route("/login").post((req, res) => {
@@ -92,57 +92,52 @@ router.route("/cccollection").post((req, res) => {
   var ccid = req.body.ccid;
   var date = new Date();
   var veg_category = req.body.category;
-  // if (Collection.findAll({ cc_id: ccid, category: veg_category }).count() > 0) {
-    Collection.updateOne(
-      { cc_id: ccid, category: veg_category },
-      {
-        $set: {
-          items: req.body.data,
-        },
-      }
-    ).catch((err) => console.log(err));
-  // } else {
-  //   Collection.insertOne({
-  //     block: "1",
-  //     krishibhavan: "Kakkur",
-  //     category: veg_category,
-  //     cc_id: ccid,
-  //     items: req.body.data,
-  //     date: `${date.getDate()}/${date.getMonth()}/${date.getFullYear}`,
-  //   });
-  // }
+
+  Collection.updateOne(
+    { cc_id: ccid, category: veg_category },
+    {
+      $set: {
+        items: req.body.data,
+      },
+    }
+  ).catch((err) => console.log(err));
 });
 
 //Update stock by posting new stock value after edit.
 router.route("/cstock").post((req, res) => {
-  // if (Stock.findAll(
-  //   { type_id: req.body.ccid, category: req.body.category }).count>0) {
-      Stock.updateOne(
-        { type_id: req.body.ccid, category: req.body.category },
-        {
-          $set: {
-            item_stock: req.body.data,
-          },
-        }
-      );
-  // } else {
-  //   //Some code Lets see
-  // }
-});
-router.route("/clogs").post((req, res) => {
-
-  CorrectionLog.updateOne(
-    { cc_id: req.body.ccid},
+  let data = req.body.data;
+  Stock.updateOne(
+    { cc_id: req.body.ccid, category: req.body.category },
     {
       $set: {
-        detail: detail.push({
-          date: new Date(),
-          logs:req.body.data
-        })
+        item_stock: data,
       },
     }
-  );
+  ).catch((err) => console.log(err));
 });
 
+//Getting correction history
+router.route("/clogs").get((req, res) => {
+  Correctionlog.findOne({ cc_is: req.query.ccid });
+  
+});
+
+//Updating correction logs
+router.route("/clogs").post((req, res) => {
+  let obj = {};
+  let data = req.body.data;
+
+  obj["date"] = new Date();
+  obj["logs"] = data;
+
+  Correctionlog.updateOne(
+    { cc_id: req.body.ccid },
+    {
+      $push: {
+        detail: { $each: [obj] },
+      },
+    }
+  ).catch((err) => console.log(err));
+});
 
 module.exports = router;
